@@ -19,6 +19,7 @@ namespace Utility.Library
             await RespondAsync(input);
         }
 
+        [Discord.Commands.RequireUserPermission(GuildPermission.ManageMessages)]
         [SlashCommand("delete-day", "deletes 1 days worth of data in a given channel")]
         public async Task ClearAllMessages()
         {
