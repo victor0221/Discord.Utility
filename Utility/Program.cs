@@ -26,6 +26,11 @@ class Program
 
         await _ioService.AddModuleAsync<InputOutCommands>(null);
 
+        _client.Ready += async () =>
+        {
+            await _ioService.RegisterCommandsGloballyAsync();
+        };
+
         _client.InteractionCreated += async interaction =>
         {
             var ctx = new SocketInteractionContext(_client, interaction);
