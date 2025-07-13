@@ -3,6 +3,7 @@ using Discord.Interactions;
 using Discord.WebSocket;
 using Microsoft.Extensions.Configuration;
 using Utility.Library;
+using Utility.Library.Services;
 
 class Program
 {
@@ -24,7 +25,9 @@ class Program
 
         _client.Log += Logger.Instance.Log;
 
-        await _ioService.AddModuleAsync<InputOutCommands>(null);
+        await _ioService.AddModuleAsync<General>(null);
+        await _ioService.AddModuleAsync<TicketService>(null);
+        await _ioService.AddModuleAsync<ConfigurationService>(null);
 
         _client.Ready += async () =>
         {

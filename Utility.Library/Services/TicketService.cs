@@ -1,5 +1,4 @@
-﻿using Discord.Commands;
-using Discord;
+﻿using Discord;
 using Discord.Interactions;
 using Discord.WebSocket;
 using System;
@@ -8,38 +7,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Utility.Library
+namespace Utility.Library.Services
 {
-    public class InputOutCommands : InteractionModuleBase<SocketInteractionContext>
+    public class TicketService : InteractionModuleBase<SocketInteractionContext>
     {
-
-        [SlashCommand("echo", "Echo an input")]
-        public async Task Echo(string input)
-        {
-            await RespondAsync(input);
-        }
-
-        [Discord.Commands.RequireUserPermission(GuildPermission.ManageMessages)]
-        [SlashCommand("delete-day", "deletes 1 days worth of data in a given channel")]
-        public async Task ClearAllMessages()
-        {
-            await DeferAsync(ephemeral: true);
-            var channel = Context.Channel as SocketTextChannel;
-
-            if (channel == null)
-            {
-                await FollowupAsync("This command can only be used in text channels.", ephemeral: true);
-                return;
-            }
-
-            var messages = await channel.GetMessagesAsync(100).FlattenAsync();
-
-            var toDelete = messages.Where(m => (System.DateTimeOffset.UtcNow - m.Timestamp).TotalDays <= 1);
-
-            await channel.DeleteMessagesAsync(toDelete);
-            await FollowupAsync("Success!", ephemeral: true);
-        }
-
         [SlashCommand("open-ticket", "opens a support ticket")]
         public async Task OpenTicketChannel(string title, string description)
         {
@@ -71,7 +42,7 @@ namespace Utility.Library
                 };
             });
 
-            if(Context.Guild.Channels.FirstOrDefault(c => c.Name == name) is not null)
+            if (Context.Guild.Channels.FirstOrDefault(c => c.Name == name) is not null)
             {
                 var card = new EmbedBuilder()
                 .WithTitle("🎫 New Support Ticket")
@@ -128,7 +99,6 @@ namespace Utility.Library
 
             await channel.DeleteAsync();
         }
-
 
     }
 }
